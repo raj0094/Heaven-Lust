@@ -1,0 +1,93 @@
+<% layout("/layouts/boilerplate") -%>
+<div class="row mt-3 ">
+    <div class="col-8 offset-2">
+        <h3 class="edit-listing">Edit listing</h3>
+        
+        <form method="post" action="/listings/<%=partIdlisting._id%>?_method=PUT" novalidate class="needs-validation">
+            <!-- Title -->
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input id="title" name="title" value="<%=partIdlisting.title%>" type="text" class="form-control" required>
+                <div class="invalide-feedback">Title should be valid </div>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <input id="description" name="description" value="<%=partIdlisting.description%>" type="text" class="form-control" required>
+                <div class="invalide-feedback">Title should be valid </div>
+            </div>
+
+            <!-- Image -->
+            <div class="mb-3">
+                <label for="image" class="form-label">Image (URL)</label>
+                <input id="image" name="image" value="<%= partIdlisting.image && partIdlisting.image.url ? partIdlisting.image.url : '' %>" type="url" class="form-control">
+            </div>
+
+            <!-- Price and Location -->
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input id="price" name="price" value="<%=partIdlisting.price%>" type="number" class="form-control" required>
+                    <div class="invalide-feedback">Please enter valid price  </div>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="location" class="form-label">Location</label>
+                    <input id="location" name="location" value="<%=partIdlisting.location%>" type="text" class="form-control" required>
+                    <div class="invalide-feedback">Location should be valid </div>
+                </div>
+                <input type="hidden" id="latitude" name="latitude" value="<%= partIdlisting.latitude ? partIdlisting.latitude : '' %>" />
+                <input type="hidden" id="longitude" name="longitude" value="<%= partIdlisting.longitude ? partIdlisting.longitude : '' %>" />
+            </div>
+
+            <!-- Country -->
+            <div class="mb-3">
+                <label for="country" class="form-label">Country</label>
+                <input id="country" name="country" value="<%=partIdlisting.country%>" type="text" class="form-control" required>
+                <div class="invalide-feedback">Country should be valid </div>
+            </div>
+
+            <button type="submit" class="btn btn-dark btn-edit">Update listing</button>
+        </form>
+    </div>
+</div>
+
+<script src="/js/script.js"></script>
+
+<% if (MAP_TOKEN) { %>
+  <script>
+    (function setupAutocomplete() {
+      function attachAutocomplete() {
+        var input = document.getElementById('location');
+        if (!input) return;
+        var latInput = document.getElementById('latitude');
+        var lngInput = document.getElementById('longitude');
+        try {
+          if (!window.google || !google.maps || !google.maps.places) {
+            attachAutocomplete._attempts = (attachAutocomplete._attempts || 0) + 1;
+            if (attachAutocomplete._attempts < 6) {
+              setTimeout(attachAutocomplete, 500);
+            } else {
+              console.warn("Google Maps Places API not available; location autocomplete disabled.");
+            }
+            return;
+          }
+          var autocomplete = new google.maps.places.Autocomplete(input, { fields: ["formatted_address", "geometry", "name"] });
+          autocomplete.addListener('place_changed', function() {
+            var place = autocomplete.getPlace();
+            if (!place || !place.geometry) return;
+            input.value = place.formatted_address || input.value;
+            latInput.value = place.geometry.location.lat();
+            lngInput.value = place.geometry.location.lng();
+          });
+          console.info("Places autocomplete initialized for #location");
+        } catch (e) {
+          console.error("Autocomplete setup error:", e);
+        }
+      }
+      window.initAutocomplete = attachAutocomplete;
+      setTimeout(attachAutocomplete, 600);
+    })();
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= MAP_TOKEN %>&libraries=places&callback=initAutocomplete"></script>
+<% } %>
