@@ -141,11 +141,7 @@ README.md
 - 🎬 demo video :
 
 
-
-
-
-
-
+https://github.com/user-attachments/assets/7f880fee-01a3-42b9-8708-08f315c60cdd
 
 
 
