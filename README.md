@@ -48,32 +48,10 @@ This project focuses on backend structure, authentication, database handling, an
 ## 📁 Project Structure
 
 This project follows the MVC (Model–View–Controller) pattern.
+<img width="647" height="380" alt="image" src="https://github.com/user-attachments/assets/1529404f-ce41-4c93-8b12-f3efcaff34bc" />
 
-├── controllers   
 
-├── init
 
-├── models
-
-├── public
-
-├── routes
-
-├── utils
-
-├── views
-
-├── app.js
-
-├── middleware.js
-
-├── schema.js
-
-├── package.json
-
-├── package-lock.json
-
-└── README.md
 
 ## 📌 Explanation
 
